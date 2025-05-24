@@ -6,14 +6,8 @@ import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import dynamic from "next/dynamic";
-import gsap from 'gsap';
-
-
-const ScrollTrigger = dynamic(() => 
-  import("gsap/ScrollTrigger").then(mod => mod.ScrollTrigger), 
-  { ssr: false }
-);
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 const navLinks = [
   { name: "About", href: "#hero" },
@@ -39,29 +33,23 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const initGSAP = async () => {
-      const gsapInstance = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      gsapInstance.gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-      const ctx = gsapInstance.gsap.context(() => {
-        gsapInstance.gsap.fromTo(
-          ".nav-item",
-          { y: -20, opacity: 0 },
-          { 
-            y: 0, 
-            opacity: 1, 
-            stagger: 0.1, 
-            duration: 0.8, 
-            ease: "power3.out" 
-          }
-        );
-      });
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".nav-item",
+        { y: -20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out",
+        }
+      );
+    });
 
-      return () => ctx.revert();
-    };
-
-    initGSAP();
+    return () => ctx.revert();
   }, []);
 
   const toggleTheme = () => {
@@ -71,7 +59,7 @@ export function Navbar() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
-    
+
     const targetElement = document.querySelector(href);
     if (targetElement) {
       window.scrollTo({
@@ -91,13 +79,16 @@ export function Navbar() {
       )}
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="font-bold text-xl text-foreground flex items-center gap-2">
+        <Link
+          href="/"
+          className="font-bold text-xl text-foreground flex items-center gap-2"
+        >
           <span className="text-primary">J</span>ignesh
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          {navLinks.map((link, i) => (
+          {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
@@ -107,12 +98,7 @@ export function Navbar() {
               {link.name}
             </a>
           ))}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={toggleTheme}
-            className="nav-item"
-          >
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="nav-item">
             {theme === "dark" ? (
               <SunIcon className="h-5 w-5" />
             ) : (
@@ -132,7 +118,7 @@ export function Navbar() {
             )}
             <span className="sr-only">Toggle theme</span>
           </Button>
-          
+
           <Button
             variant="ghost"
             size="icon"
