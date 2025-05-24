@@ -8,32 +8,32 @@ import { Footer } from '@/components/footer';
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <main className="flex flex-col min-h-screen">
       <section id="hero" className="min-h-screen">
         <HeroSection />
       </section>
-      
+
       <section id="experience" className="py-20">
         <ExperienceSection />
       </section>
-      
+
       <section id="projects" className="py-20 bg-muted/30">
         <ProjectsSection />
       </section>
-      
+
       <section id="certifications" className="py-20">
         <CertificationsSection />
       </section>
-      
+
       <section id="skills" className="py-20 bg-muted/30">
         <SkillsSection />
       </section>
-      
+
       <section id="contact" className="py-20">
         <ContactSection />
       </section>
-      
+
       <Footer />
-    </div>
+    </main>
   );
 }
