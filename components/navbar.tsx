@@ -7,8 +7,9 @@ import { MoonIcon, SunIcon, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
+import gsap from 'gsap';
 
-const gsap = dynamic(() => import("gsap"), { ssr: false });
+
 const ScrollTrigger = dynamic(() => 
   import("gsap/ScrollTrigger").then(mod => mod.ScrollTrigger), 
   { ssr: false }
