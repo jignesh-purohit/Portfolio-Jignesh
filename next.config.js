@@ -4,9 +4,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // skip ESLint errors during build
   },
-  typescript: {
-    ignoreBuildErrors: true, // ✅ skip TypeScript errors during build
-  },
   images: {
     unoptimized: true, // used with `output: 'export'`
   },
