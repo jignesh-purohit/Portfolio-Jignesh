@@ -6,8 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ShieldAlert, Scan, Code, Clock, Users, Search, Terminal, Laptop, Brush as Virus } from "lucide-react";
+import { ShieldAlert, Code, Clock, Users, Search, Terminal, Laptop, Brush as Virus } from "lucide-react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -54,8 +53,17 @@ const softSkills = [
   { name: "Teamwork", icon: <Users className="h-4 w-4" /> },
   { name: "Curiosity", icon: <Search className="h-4 w-4" /> },
   { name: "Problem Solving", icon: <Terminal className="h-4 w-4" /> },
-  { name: "Analytical Thinking", icon: <Scan className="h-4 w-4" /> },
+  { name: "Analytical Thinking", icon: <Virus className="h-4 w-4" /> },
   { name: "Attention to Detail", icon: <Virus className="h-4 w-4" /> },
+];
+
+// Helper for color classes
+const chartColors = [
+  "bg-chart-1",
+  "bg-chart-2",
+  "bg-chart-3",
+  "bg-chart-4",
+  "bg-chart-5",
 ];
 
 export function SkillsSection() {
@@ -64,72 +72,68 @@ export function SkillsSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate the section title
       gsap.fromTo(
         titleRef.current,
         { y: 50, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 0.8, 
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
           scrollTrigger: {
             trigger: titleRef.current,
             start: "top bottom-=100",
-            toggleActions: "play none none reverse"
-          }
+            toggleActions: "play none none reverse",
+          },
         }
       );
 
-      // Animate the skill cards
       gsap.fromTo(
         ".skill-card",
         { y: 50, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
+        {
+          y: 0,
+          opacity: 1,
           stagger: 0.2,
           duration: 0.8,
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".skills-container",
             start: "top bottom-=50",
-            toggleActions: "play none none reverse"
-          }
+            toggleActions: "play none none reverse",
+          },
         }
       );
 
-      // Animate the progress bars
       gsap.fromTo(
-        ".skill-progress",
+        ".skill-progress .indicator",
         { width: 0 },
-        { 
-          width: "100%", 
+        {
+          width: (i, target) => target.getAttribute("data-level") + "%",
           duration: 1.5,
           ease: "power2.out",
           stagger: 0.1,
           scrollTrigger: {
             trigger: ".skills-container",
             start: "top bottom-=100",
-            toggleActions: "play none none reverse"
-          }
+            toggleActions: "play none none reverse",
+          },
         }
       );
 
-      // Animate the soft skills
       gsap.fromTo(
         ".soft-skill",
         { scale: 0.8, opacity: 0 },
-        { 
-          scale: 1, 
-          opacity: 1, 
+        {
+          scale: 1,
+          opacity: 1,
           stagger: 0.1,
           duration: 0.6,
           ease: "back.out(1.7)",
           scrollTrigger: {
             trigger: ".soft-skills-container",
             start: "top bottom-=50",
-            toggleActions: "play none none reverse"
-          }
+            toggleActions: "play none none reverse",
+          },
         }
       );
     }, sectionRef);
@@ -139,7 +143,7 @@ export function SkillsSection() {
 
   return (
     <div ref={sectionRef} className="container mx-auto px-4">
-      <h2 
+      <h2
         ref={titleRef}
         className="text-3xl md:text-4xl font-bold mb-12 text-center"
       >
@@ -148,7 +152,7 @@ export function SkillsSection() {
 
       <div className="skills-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         {skillCategories.map((category) => (
-          <Card 
+          <Card
             key={category.id}
             className="skill-card border backdrop-blur-sm overflow-hidden"
           >
@@ -165,11 +169,16 @@ export function SkillsSection() {
                     <span>{skill.name}</span>
                     <span className="text-muted-foreground">{skill.level}%</span>
                   </div>
-                  <Progress 
-                    value={skill.level} 
-                    className="h-2 skill-progress" 
-                    indicatorClassName={`bg-chart-${(idx % 5) + 1}`}
-                  />
+                  <Progress
+                    value={skill.level}
+                    className="h-2 skill-progress bg-gray-200 rounded overflow-hidden"
+                  >
+                    <div
+                      className={`indicator h-full ${chartColors[idx % chartColors.length]}`}
+                      data-level={skill.level}
+                      style={{ width: "0%" }} // Will animate to real width with gsap
+                    />
+                  </Progress>
                 </div>
               ))}
             </CardContent>
@@ -181,9 +190,9 @@ export function SkillsSection() {
         <h3 className="text-xl font-semibold mb-6 text-center">Soft Skills</h3>
         <div className="soft-skills-container flex flex-wrap justify-center gap-4">
           {softSkills.map((skill, idx) => (
-            <Badge 
+            <Badge
               key={idx}
-              className="soft-skill py-2 px-4 text-base bg-card hover:bg-card/80 border"
+              className="soft-skill py-2 px-4 text-base bg-card hover:bg-card/80 border flex items-center"
             >
               {skill.icon}
               <span className="ml-2">{skill.name}</span>
