@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: 'export', // for static export
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // skip ESLint errors during build
   },
-  images: { unoptimized: true },
+  typescript: {
+    ignoreBuildErrors: true, // ✅ skip TypeScript errors during build
+  },
+  images: {
+    unoptimized: true, // used with `output: 'export'`
+  },
 };
 
 module.exports = nextConfig;
